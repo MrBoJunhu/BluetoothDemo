@@ -8,6 +8,8 @@
 
 #import "ViewController.h"
 
+#import "BluetoothManager.h"
+
 @interface ViewController ()
 
 @end
@@ -20,12 +22,15 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     
+    [BluetoothManager shareBluetoothManager];
+    
 }
 
 
 - (void)didReceiveMemoryWarning {
+    
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+
 }
 
 

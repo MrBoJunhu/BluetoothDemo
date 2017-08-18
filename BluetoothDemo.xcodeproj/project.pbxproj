@@ -15,6 +15,7 @@
 		A5FE77281F4686B7007048D0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A5FE77261F4686B7007048D0 /* LaunchScreen.storyboard */; };
 		A5FE77331F4686B7007048D0 /* BluetoothDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A5FE77321F4686B7007048D0 /* BluetoothDemoTests.m */; };
 		A5FE773E1F4686B7007048D0 /* BluetoothDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = A5FE773D1F4686B7007048D0 /* BluetoothDemoUITests.m */; };
+		A5FE774E1F468871007048D0 /* BluetoothManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A5FE774D1F468871007048D0 /* BluetoothManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,8 @@
 		A5FE77391F4686B7007048D0 /* BluetoothDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BluetoothDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5FE773D1F4686B7007048D0 /* BluetoothDemoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BluetoothDemoUITests.m; sourceTree = "<group>"; };
 		A5FE773F1F4686B7007048D0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A5FE774C1F468871007048D0 /* BluetoothManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BluetoothManager.h; sourceTree = "<group>"; };
+		A5FE774D1F468871007048D0 /* BluetoothManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BluetoothManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +104,7 @@
 		A5FE77171F4686B7007048D0 /* BluetoothDemo */ = {
 			isa = PBXGroup;
 			children = (
+				A5FE774B1F468854007048D0 /* BluetoothManager */,
 				A5FE771B1F4686B7007048D0 /* AppDelegate.h */,
 				A5FE771C1F4686B7007048D0 /* AppDelegate.m */,
 				A5FE771E1F4686B7007048D0 /* ViewController.h */,
@@ -138,6 +142,15 @@
 				A5FE773F1F4686B7007048D0 /* Info.plist */,
 			);
 			path = BluetoothDemoUITests;
+			sourceTree = "<group>";
+		};
+		A5FE774B1F468854007048D0 /* BluetoothManager */ = {
+			isa = PBXGroup;
+			children = (
+				A5FE774C1F468871007048D0 /* BluetoothManager.h */,
+				A5FE774D1F468871007048D0 /* BluetoothManager.m */,
+			);
+			name = BluetoothManager;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -278,6 +291,7 @@
 			files = (
 				A5FE77201F4686B7007048D0 /* ViewController.m in Sources */,
 				A5FE771D1F4686B7007048D0 /* AppDelegate.m in Sources */,
+				A5FE774E1F468871007048D0 /* BluetoothManager.m in Sources */,
 				A5FE771A1F4686B7007048D0 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -429,6 +443,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = F8GY9XXT4N;
 				INFOPLIST_FILE = BluetoothDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bill.BluetoothDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -441,6 +456,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = F8GY9XXT4N;
 				INFOPLIST_FILE = BluetoothDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bill.BluetoothDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -516,6 +532,7 @@
 				A5FE77441F4686B7007048D0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A5FE77451F4686B7007048D0 /* Build configuration list for PBXNativeTarget "BluetoothDemoTests" */ = {
 			isa = XCConfigurationList;
@@ -524,6 +541,7 @@
 				A5FE77471F4686B7007048D0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A5FE77481F4686B7007048D0 /* Build configuration list for PBXNativeTarget "BluetoothDemoUITests" */ = {
 			isa = XCConfigurationList;
@@ -532,6 +550,7 @@
 				A5FE774A1F4686B7007048D0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
