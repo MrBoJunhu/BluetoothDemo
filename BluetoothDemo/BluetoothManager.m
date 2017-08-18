@@ -32,6 +32,18 @@
  */
 @property (nonatomic, strong) NSMutableArray *searchResultArray;
 
+
+/**
+ MAC校验
+ */
+@property (nonatomic, copy) NSString *macAddressStr;
+
+
+/**
+ MAC地址
+ */
+@property (nonatomic, copy) NSString *MAC_AddressString;
+
 @end
 
 
@@ -54,8 +66,6 @@
     
     if (self = [super init]) {
         
-        [self centralManager];
-
     }
     
     return self;
@@ -129,20 +139,26 @@
         {
             //蓝牙开启
             NSLog(@"蓝牙开启  : CBManagerStatePoweredOn");
-            CBUUID *cbUUID = [CBUUID UUIDWithString:@"FF12"];
-            [central scanForPeripheralsWithServices:@[cbUUID] options:nil];
-            
+     
         }
             break;
         default:
             break;
     }
     
+    if (central.state != CBManagerStatePoweredOff) {
+        
+        [central scanForPeripheralsWithServices:nil options:nil];
+        
+    }
+    //            CBUUID *cbUUID = [CBUUID UUIDWithString:@"FF12"];
+    //            [self.centralManager scanForPeripheralsWithServices:@[cbUUID] options:nil];
+    
 }
 
 
 
-- (void)centralManager:(CBCentralManager *)central willRestoreState:(NSDictionary<NSString *, id> *)dict{
+- (void)centralManager:(CBCentralManager *)central willRestoreState:(NSDictionary<NSString *, id> *)dict {
     
     
     
@@ -160,28 +176,60 @@
 - (void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary<NSString *, id> *)advertisementData RSSI:(NSNumber *)RSSI {
     
     //扫描周围外设
-    if ([peripheral.name hasPrefix:@"SHHC"]) {
-        
-        NSLog(@"搜索到的外设名称:  %@", peripheral.name);
     
-        NSLog(@"\n🍎peripheral :%@ \n advertisementData :%@ \n RSSI: %ld \n🍎",peripheral,  advertisementData , labs(RSSI.integerValue));
+    if ([peripheral.name hasPrefix:@"SHHC"] ) {
+        
+        if (self.searchResultArray.count == 0) {
+            
+            [self.searchResultArray addObject:peripheral];
+            
+        }
+        
+        for (CBPeripheral *per in self.searchResultArray) {
+            
+            if (per.identifier == peripheral.identifier) {
+                
+                return;
+            
+            }
+            
+            [self.searchResultArray addObject:peripheral];
+        
+        }
+        
+    }
+    
+    self.searchBlock(self.searchResultArray);
+    
+}
 
-        [self connectCBPeripheral:peripheral];
+#pragma mark - 过滤设备
+
+- (void)dealSearchReult {
+    
+    for (CBPeripheral *peripheral in self.searchResultArray) {
         
-    }else{
-        
-        NSLog(@"%@", peripheral.name);
+        if ([peripheral.name hasPrefix:@"SHHC"]) {
+            
+            
+        }
         
     }
     
 }
 
 
+
+
 - (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral {
     
     NSLog(@"\n😂  -------- 连接外设成功 -------- 😂");
-    NSLog(@"identifier :%@ name: %@  peripheral.state: %ld", peripheral.identifier, peripheral.name, peripheral.state);
+   
     self.currentPeripheral.delegate = self;
+    
+    CBUUID *macServiceUUID = [CBUUID UUIDWithString:@"180A"];
+
+    [self.currentPeripheral discoverServices:@[macServiceUUID]];
 
 }
 
@@ -226,6 +274,14 @@
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(nullable NSError *)error {
     
     
+    NSLog(@"发现服务");
+    //服务
+    CBService *deviceService = peripheral.services.firstObject;
+    
+    CBUUID *macCharcteristicUUID = [CBUUID UUIDWithString:@"2A23"];
+    
+    [self.currentPeripheral discoverCharacteristics:@[macCharcteristicUUID] forService:deviceService];
+    
 }
 
 
@@ -236,11 +292,40 @@
 
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverCharacteristicsForService:(CBService *)service error:(nullable NSError *)error {
     
+    //连接到服务数据
+    CBUUID *macCharcteristicUUID = [CBUUID UUIDWithString:@"2A23"];
+    
+    if (service.characteristics.count == 0) {
+    
+        self.macAddressStr = [NSString stringWithFormat:@"OLD BLE:%@", self.currentPeripheral.name];
+        
+    }else{
+        
+        for (CBCharacteristic *characteristic in service.characteristics) {
+            
+            if ([characteristic.UUID isEqual:macCharcteristicUUID]) {
+                
+                [self.currentPeripheral readValueForCharacteristic:characteristic];
+                
+            }
+            
+        }
+
+    }
     
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(nullable NSError *)error {
     
+    NSLog(@"/n 🍎 didUpdateValueForCharacteristic : 此处获取MAC 地址 🍎");
+    
+    CBUUID *systemID = [CBUUID UUIDWithString:@"2A23"];
+    
+    if ([characteristic.UUID isEqual:systemID]) {
+        
+      self.macAddressStr = [self getMacAddressWithCBCharacteristic:characteristic];
+        
+    }
     
 }
 
@@ -274,6 +359,18 @@
     
     self.searchBlock = result;
     
+    [self.searchResultArray removeAllObjects];
+    
+    if (self.centralManager.state != CBManagerStatePoweredOff) {
+        
+        [self.centralManager scanForPeripheralsWithServices:nil options:nil];
+
+    }else{
+        
+        NSLog(@"请检查手机的蓝牙设置");
+        
+    }
+    
 }
 
 /**
@@ -281,12 +378,62 @@
  @param peripheral peripheral description
  */
 - (void)connectCBPeripheral:(CBPeripheral *)peripheral {
+   
     self.currentPeripheral = peripheral;
+    
     [_centralManager connectPeripheral:peripheral options:nil];
     
 }
 
+/**
+ 主动断开蓝牙连接
+ */
+- (void)disconnectBluetooth {
+    
+    if (self.centralManager && self.currentPeripheral) {
+        
+        [self.centralManager cancelPeripheralConnection:self.currentPeripheral];
+        
+    }
+    
+}
 
+
+#pragma mark - 获取设备的mac地址
+
+- (NSString *)getMacAddressWithCBCharacteristic:(CBCharacteristic *)characteristic {
+    
+    NSString *value = [NSString stringWithFormat:@"%@",characteristic.value];
+    
+    NSMutableString*macString = [[NSMutableString alloc]init];
+    
+    [macString appendString:[[value substringWithRange:NSMakeRange(16,2)] uppercaseString]];
+    
+    [macString appendString:@":"];
+    
+    [macString appendString:[[value substringWithRange:NSMakeRange(14,2)]uppercaseString]];
+    
+    [macString appendString:@":"];
+    
+    [macString appendString:[[value substringWithRange:NSMakeRange(12,2)]uppercaseString]];
+    
+    [macString appendString:@":"];
+    
+    [macString appendString:[[value substringWithRange:NSMakeRange(5,2)]uppercaseString]];
+    
+    [macString appendString:@":"];
+    
+    [macString appendString:[[value substringWithRange:NSMakeRange(3,2)]uppercaseString]];
+    
+    [macString appendString:@":"];
+    
+    [macString appendString:[[value substringWithRange:NSMakeRange(1,2)]uppercaseString]];
+    
+    NSLog(@"MAC地址是 : %@",macString);
+  
+    return macString;
+
+}
 
 
 @end

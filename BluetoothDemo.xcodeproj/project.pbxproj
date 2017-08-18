@@ -16,6 +16,7 @@
 		A5FE77331F4686B7007048D0 /* BluetoothDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A5FE77321F4686B7007048D0 /* BluetoothDemoTests.m */; };
 		A5FE773E1F4686B7007048D0 /* BluetoothDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = A5FE773D1F4686B7007048D0 /* BluetoothDemoUITests.m */; };
 		A5FE774E1F468871007048D0 /* BluetoothManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A5FE774D1F468871007048D0 /* BluetoothManager.m */; };
+		A5FE77511F46CCE1007048D0 /* SearchResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = A5FE77501F46CCE1007048D0 /* SearchResultView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +55,8 @@
 		A5FE773F1F4686B7007048D0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A5FE774C1F468871007048D0 /* BluetoothManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BluetoothManager.h; sourceTree = "<group>"; };
 		A5FE774D1F468871007048D0 /* BluetoothManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BluetoothManager.m; sourceTree = "<group>"; };
+		A5FE774F1F46CCE1007048D0 /* SearchResultView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultView.h; sourceTree = "<group>"; };
+		A5FE77501F46CCE1007048D0 /* SearchResultView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +152,8 @@
 			children = (
 				A5FE774C1F468871007048D0 /* BluetoothManager.h */,
 				A5FE774D1F468871007048D0 /* BluetoothManager.m */,
+				A5FE774F1F46CCE1007048D0 /* SearchResultView.h */,
+				A5FE77501F46CCE1007048D0 /* SearchResultView.m */,
 			);
 			name = BluetoothManager;
 			sourceTree = "<group>";
@@ -291,6 +296,7 @@
 			files = (
 				A5FE77201F4686B7007048D0 /* ViewController.m in Sources */,
 				A5FE771D1F4686B7007048D0 /* AppDelegate.m in Sources */,
+				A5FE77511F46CCE1007048D0 /* SearchResultView.m in Sources */,
 				A5FE774E1F468871007048D0 /* BluetoothManager.m in Sources */,
 				A5FE771A1F4686B7007048D0 /* main.m in Sources */,
 			);

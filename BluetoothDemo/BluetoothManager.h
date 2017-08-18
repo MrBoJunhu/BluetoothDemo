@@ -30,4 +30,10 @@ typedef void(^searchResultBlock)(NSMutableArray *resultArray);
  */
 - (void)connectCBPeripheral:(CBPeripheral *)peripheral;
 
+/**
+ 断开连接
+ */
+- (void)disconnectBluetooth;
+
+
 @end

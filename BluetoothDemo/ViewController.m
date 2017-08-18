@@ -10,6 +10,8 @@
 
 #import "BluetoothManager.h"
 
+#import "SearchResultView.h"
+
 @interface ViewController ()
 
 @end
@@ -22,16 +24,43 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     
-    [BluetoothManager shareBluetoothManager];
     
 }
 
+- (IBAction)beginSearchBluetooth:(id)sender {
+    
+    __block BOOL show = YES;
+    
+    [[BluetoothManager shareBluetoothManager] searchPeripherals:^(NSMutableArray *resultArray) {
+                
+        if (resultArray.count > 0 && show) {
+            
+            SearchResultView *v= [[SearchResultView alloc] initWithPeripherals:resultArray clickSelectedPeripheral:^(CBPeripheral *peripheral) {
+                
+                
+            }];
+            
+            [v show];
+            
+            show = NO;
+
+        }
+        
+    }];;
+
+}
+
+
+- (IBAction)disconnectBluetooth:(id)sender {
+    
+    [[BluetoothManager shareBluetoothManager] disconnectBluetooth];
+    
+}
 
 - (void)didReceiveMemoryWarning {
     
     [super didReceiveMemoryWarning];
 
 }
-
 
 @end
