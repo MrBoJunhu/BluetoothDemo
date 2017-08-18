@@ -40,7 +40,7 @@
 
 
 /**
- MAC地址
+ 设备的MAC地址(连接到的设备的蓝牙id)
  */
 @property (nonatomic, copy) NSString *MAC_AddressString;
 
